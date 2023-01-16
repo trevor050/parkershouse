@@ -1,0 +1,524 @@
+<!--connect to the css and js file-->
+<!doctype html>
+<meta name="viewport" content="width=device-width">
+<html>
+<head>
+<title>Parkers house countdown!</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js" integrity="sha512-wT7uPE7tOP6w4o28u1DN775jYjHQApdBnib5Pho4RB0Pgd9y7eSkAV1BTqQydupYDB9GBhTcQQzyNMPMV3cAew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<style>
+    @import url('https://fonts.cdnfonts.com/css/lemonmilk');
+    @import url('https://fonts.googleapis.com/css?family=Bowlby+One+SC');
+    /*make sure text is on one line*/
+    body {
+        background-color: #194a50;
+    }
+    @media screen and (min-width: 701px) {
+    .CountdownText {
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Lemon/Milk';
+        font-size: 30px;
+        white-space: nowrap;
+        color: #d37556;
+    }
+}
+@media screen and (max-width: 700px) {
+    .CountdownText {
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Lemon/Milk';
+        font-size: 20px;
+        white-space: nowrap;
+        color: #d37556;
+    }
+}
+
+    #TimerTextDayNum {
+        position: absolute;
+        top: 30%;
+        left: 15%;
+        transform: translate(-50%, -50%);
+        font-family: "Bowlby One SC";
+        font-size: 50px;
+        white-space: nowrap;
+        color: #0c2431
+    }
+    #TimerTextDayText {
+        position: absolute;
+        top: 42%;
+        left: 15%;
+        transform: translate(-50%, -50%);
+        font-family: "Bowlby One SC";
+        font-size: 25px;
+        white-space: nowrap;
+        color: #e1dad2
+    }
+    /*fit days, hours, minutes, seconds all in one line */
+    #TimerTextHourNum {
+        position: absolute;
+        top: 30%;
+        left: 40%;
+        transform: translate(-50%, -50%);
+        font-family: "Bowlby One SC";
+        font-size: 50px;
+        white-space: nowrap;
+        color: #0c2431
+    }
+    #TimerTextHourText {
+        position: absolute;
+        top: 42%;
+        left: 40%;
+        transform: translate(-50%, -50%);
+        font-family: "Bowlby One SC";
+        font-size: 25px;
+        white-space: nowrap;
+        color: #e1dad2
+    }
+    #TimerTextMinuteNum {
+        position: absolute;
+        top: 30%;
+        left: 65%;
+        transform: translate(-50%, -50%);
+        font-family: "Bowlby One SC";
+        font-size: 50px;
+        white-space: nowrap;
+        color: #0c2431
+    }
+    #TimerTextMinuteText {
+        position: absolute;
+        top: 42%;
+        left: 65%;
+        transform: translate(-50%, -50%);
+        font-family: "Bowlby One SC";
+        font-size: 25px;
+        white-space: nowrap;
+        color: #e1dad2
+    }
+    #TimerTextSecondNum {
+        position: absolute;
+        top: 30%;
+        left: 90%;
+        transform: translate(-50%, -50%);
+        font-family: "Bowlby One SC";
+        font-size: 50px;
+        white-space: nowrap;
+        color: #0c2431
+    }
+    #TimerTextSecondText {
+        position: absolute;
+        top: 42%;
+        left: 90%;
+        transform: translate(-50%, -50%);
+        font-family: "Bowlby One SC";
+        font-size: 25px;
+        white-space: nowrap;
+        color: #e1dad2
+    }
+    #estimatewarn {
+        position: absolute;
+        top: 82%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: "arial";
+        font-size: 1vh;
+        white-space: nowrap;
+        color:grey
+    }
+    #CurrentDebt {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Lemon/Milk';
+        font-size: 25px;
+        white-space: nowrap;
+        color: #d37556;
+    }
+    #CurrentDebtNum {
+        position: absolute;
+        top: 63%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: "Bowlby One SC";
+        font-size: 50px;
+        white-space: nowrap;
+        color: #0c2431
+    }
+    #AddDebt {
+    background-color:#e1dad2;
+  background: #FF4742;
+  border: 0.5vh solid #FF4742;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Lemon/Milk",roboto,proxima-nova,"proxima nova",sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 16px;
+  min-height: 6.5vh;
+  outline: 0;
+  padding: 12px 14px;
+  text-align: center;
+  text-rendering: geometricprecision;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+    white-space: nowrap;
+    position: absolute;
+        top: 78%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+}
+#AddDebt:hover {
+    transition-duration: 0.1s;
+  }
+/* CSS */
+#GlobalToggle {
+  align-items: center;
+  background-color: #018749;
+  border: 0;
+  border-radius: 100px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "Lemon/Milk", system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 20px;
+  max-width: 480px;
+  min-height: 40px;
+  min-width: 0px;
+  overflow: hidden;
+  padding: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  vertical-align: middle;
+    white-space: nowrap;
+    position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+}
+
+</style>
+</head>
+<body>
+<p id="CountdownText"class="CountdownText">CountDown To Parker Becoming Homeless:</p>
+<p id="TimerTextDayNum" class="CountdownText">0</p>
+<p id="TimerTextDayText" class="CountdownNum">Days</p>
+<p id="TimerTextHourNum" class="CountdownText">0</p>
+<p id="TimerTextHourText" class="CountdownNum">Hours</p>
+<p id="TimerTextMinuteNum" class="CountdownText">0</p>
+<p id="TimerTextMinuteText" class="CountdownNum">Minutes</p>
+<p id="TimerTextSecondNum" class="CountdownText">0</p>
+<p id="TimerTextSecondText" class="CountdownNum">Seconds</p>
+<p id="estimatewarn" onclick="ModInit()">Estimate based on current data, version 6.3 (12/23/22)</p>
+<p id="CurrentDebt" class="CountdownNum">Current Debt:</p>
+<p id="CurrentDebtNum" class="CountdownText">$14,000</p>
+<button id="GlobalToggle" onclick="Toggle()">Personal</button>
+<button id="AddDebt" onclick="AddDebt()">Add Debt</button>
+<script type="text/javascript">
+    AddDebtButton = document.getElementById('AddDebt');
+    DebtTypePersonal = true;
+    ERRTHRN = false;
+    TruthModActive = false;
+    VoicesModActive = false;
+    SillyNeckModActive = false;
+    GlobalDebtAmount = "1000000";
+    FixedGlobalDebtAmount = 0;
+    CurrentDebt = document.getElementById("CurrentDebtNum");
+    //check if the cookie DebtAmount exists
+    if (Cookies.get('DebtAmount') == undefined) {
+        //if it doesn't, set it to 14000
+        Cookies.set('DebtAmount', 14000);
+    }
+    //set the text of CurrentDebt to the value of the cookie DebtAmount
+    DebtAmount = parseInt(Cookies.get('DebtAmount'));
+    FixedDebtAmount = DebtAmount.toLocaleString("en-US");
+    CurrentDebt.innerHTML = "$" + FixedDebtAmount;
+    Days = document.getElementById("TimerTextDayNum");
+    console.log(Days);
+    Hours = document.getElementById("TimerTextHourNum");
+    Minutes = document.getElementById("TimerTextMinuteNum");
+    Seconds = document.getElementById("TimerTextSecondNum");
+    // Countdown till January 12th, 2023
+    var countDownDate = new Date("Jan 12, 2023 00:00:00").getTime();
+    function truth() {
+        personal()
+        CountdownText = document.getElementById("CountdownText")
+        CurrentDebtText = document.getElementById("CurrentDebt");
+        NumTexts = document.getElementsByClassName("CountdownText");
+        NumTexts2 = document.getElementsByClassName("CountdownNum");
+        CountdownText.innerHTML = "Countdown to us dropping parker"
+        CurrentDebtText.innerHTML = "Current Degeneracy Level:"
+        GlobalToggleButton = document.getElementById("GlobalToggle");
+        AddDebtButton = document.getElementById("AddDebt");
+        AddDebtButton.innerHTML = "Add Degeneracy"
+        //hide global toggle button
+        GlobalToggleButton.style.display = "none";
+        //set body background to red
+        document.body.style.background = "#4d0000";
+        CountdownText.style.color = "#ffffff";
+        CurrentDebtText.style.color = "#ffffff";
+        for (i = 0; i < NumTexts.length; i++) {
+            NumTexts[i].style.color = "#ffffff";
+        }
+        for (i = 0; i < NumTexts2.length; i++) {
+            NumTexts2[i].style.color = "#ffffff";
+        }
+        countDownDate = new Date("Dec 15, 2022 00:00:00").getTime();
+        CurrentDebt.innerHTML = FixedDebtAmount + " Deepfakes";
+        TruthModActive = true;
+        VoicesModActive = false;
+        }
+    function thevoices() {
+        personal()
+        CountdownText = document.getElementById("CountdownText")
+        CurrentDebtText = document.getElementById("CurrentDebt");
+        NumTexts = document.getElementsByClassName("CountdownText");
+        NumTexts2 = document.getElementsByClassName("CountdownNum");
+        CountdownText.innerHTML = "Countdown to the voices winning"
+        CurrentDebtText.innerHTML = "Current Amount Of Voices:"
+        GlobalToggleButton = document.getElementById("GlobalToggle");
+        AddDebtButton = document.getElementById("AddDebt");
+        AddDebtButton.innerHTML = "Add Voices"
+        //make add debt button background color off white
+        AddDebtButton.style.backgroundColor = "#f2f2f2";
+        //make add debt button text color black
+        AddDebtButton.style.color = "#000000";
+        //make border color Black
+        AddDebtButton.style.borderColor = "#000000";
+        //hide global toggle button
+        GlobalToggleButton.style.display = "none";
+        //text color to black
+        CountdownText.style.color = "#000000";
+        CurrentDebtText.style.color = "#000000";
+        for (i = 0; i < NumTexts.length; i++) {
+            NumTexts[i].style.color = "#000000";
+        }
+
+        document.body.style.background = "#ffffff";
+        countDownDate = new Date("Dec 25, 2022 00:00:00").getTime();
+        CurrentDebt.innerHTML = FixedDebtAmount + " Voices";
+        VoicesModActive = true;
+        TruthModActive = false;
+    }
+function normal() {
+        //reload page
+        location.reload();
+    }
+    function ModInit() {
+        var key = prompt("Enter Mod Key:");
+        key = key.toLowerCase();
+        if (key == "truth") {
+            truth();
+        }
+        else if (key == "thevoices" || key == "the voices") {
+            thevoices();
+        }
+        else if (key == "normal") {
+            normal();
+        }
+        else {
+            alert("Modding Key Not Found.");
+        }
+    }
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+        // Get today's date and time
+        var now = new Date().getTime();
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        // Display the result in the element with id="demo"
+        if (seconds <= 0) {
+            seconds = 0
+            hours = 0
+            minutes = 0
+            days = 0
+        }
+        Days.innerHTML = days;
+        Hours.innerHTML = hours;
+        Minutes.innerHTML = minutes;
+        Seconds.innerHTML = seconds;
+        // If the count down is finished, write some text
+    }, 1000);
+    //check if DebtAmount cookie exists, if it does then add it replace the current debt with it
+    var DebtUpdater = setInterval(function() {
+        if (DebtTypePersonal == false) {
+            global();
+        }
+    }, 65);
+
+    function personal() {
+        DebtTypePersonal = true;
+        if (Cookies.get('DebtAmount') == undefined) {
+            //if it doesn't, set it to 14000
+            Cookies.set('DebtAmount', 14000);
+        }
+        DebtAmount = parseInt(Cookies.get('DebtAmount'));
+        FixedDebtAmount = DebtAmount.toLocaleString("en-US");
+        CurrentDebt.innerHTML = "$" + FixedDebtAmount;
+        AddDebtButton.innerHTML = "Add Debt"
+        AddDebtButton.style.pointerEvents = "auto";
+    }
+    async function global() {
+        AddDebtButton.innerHTML = "Max Reached"
+        //make adddebtbutton not clickable
+        AddDebtButton.style.pointerEvents = "none";
+        //get cookies from http://localhost:8080/?getoradd=get
+        //set GlobalDebtAmount to the response from http://54.92.213.44:8080/?getoradd=
+        try {
+            fetch('https://parkerhouse.tk/?getoradd=get', {mode: 'no-cors'})
+                .then(response => response.json())
+                .then(data => {
+                    GlobalDebtAmount = data;
+                    FixedGlobalDebtAmount = GlobalDebtAmount.toLocaleString("en-US");
+                    if (DebtTypePersonal == false) {
+                        CurrentDebt.innerHTML = "$" + FixedGlobalDebtAmount;
+                    }
+                });
+            //set the text of CurrentDebt to the value of the cookie DebtAmount
+            GlobalDebtAmount = parseInt(GlobalDebtAmount);
+            FixedGlobalDebtAmount = GlobalDebtAmount.toLocaleString("en-US");
+            CurrentDebt.innerHTML = "$" + FixedGlobalDebtAmount;
+            DebtTypePersonal = false;
+            CurrentDebt.innerHTML = "$" + FixedGlobalDebtAmount;
+        } catch (error) {
+            CurrentDebt.innerHTML = "$" + FixedDebtAmount;
+            $.alert({
+                title: 'Error!',
+                content: 'Couldn\'t reach server. Please check your internet connection.',
+                type: 'red',
+                typeAnimated: true,
+            });
+            DebtTypePersonal = true;
+            ERRTHRN = true;
+            Toggle()
+        }
+    }
+    function Toggle() {
+        GlobalPublic = document.getElementById("GlobalToggle");
+        console.log(GlobalPublic);
+        if (GlobalPublic.innerHTML == "Global") {
+            var $gb = $("#GlobalToggle");
+            if ($gb.text() == "Global");
+            $($gb).animate({
+            backgroundColor: "#018749",
+            width: 120
+            }, 200);
+            $gb.text("Personal");
+            personal()
+        } else {
+            GlobalPublic.innerHTML = "Global";
+            var $gb = $("#GlobalToggle");
+            if ($gb.text() == "Personal");
+            $($gb).animate({
+                backgroundColor: "#0A66C2",
+                width: 95
+                }, 200);
+                $gb.text("Global");
+                global()
+        }
+    }
+    function AddDebt() {
+        if (DebtTypePersonal == true) {
+            DebtAmount = parseInt(Cookies.get('DebtAmount'));
+            DebtAmount = DebtAmount + 1;
+            Cookies.set('DebtAmount', DebtAmount);
+            FixedDebtAmount = DebtAmount.toLocaleString("en-US");
+            if (TruthModActive == true) {
+                CurrentDebt.innerHTML = FixedDebtAmount + " Deepfakes";
+            }
+            else if (VoicesModActive == true) {
+                CurrentDebt.innerHTML = FixedDebtAmount + " Voices";
+            }
+            else {
+                CurrentDebt.innerHTML = "$" + FixedDebtAmount;
+            }
+        }
+        if (DebtTypePersonal == false) {
+            //if fetch failsl, throw an error and switch back to personal
+            try {
+                fetch('https://parkerhouse.tk/?getoradd=add', {mode: 'cors'})
+                    .then(response => response.text()) //console log response
+                    .then(data => {
+                        GlobalDebtAmount = data;
+                        console.log(GlobalDebtAmount);
+                        //set the text of CurrentDebt to the value of the cookie DebtAmount
+                        GlobalDebtAmount = parseInt(GlobalDebtAmount);
+                        FixedGlobalDebtAmount = GlobalDebtAmount.toLocaleString("en-US");
+                        CurrentDebt.innerHTML = "$" + FixedGlobalDebtAmount;
+                        GlobalDebtAmount = GlobalDebtAmount + 1;
+                    Cookies.set('GlobalDebtAmount', GlobalDebtAmount);
+                    FixedGlobalDebtAmount = GlobalDebtAmount.toLocaleString("en-US");
+                    CurrentDebt.innerHTML = "$" + FixedGlobalDebtAmount;
+                    });
+            } catch (error) {
+                Toggle()
+                $.alert({
+                    title: 'Error!',
+                    content: 'Failed to add debt to global debt, switching to personal debt!',
+                    type: 'red',
+	                typeAnimated: true,
+                });
+            }
+        }
+        }
+    function RemoveDebt() {
+    }
+    if (DebtTypePersonal == false) {
+        document.getElementById("AddDebt").onmousedown = function(event) {
+            //fires when mouse down on
+            try {
+                fetch('https://parkerhouse.tk/?getoradd=addmany', {mode: 'cors'})
+                    .then(response => response.text()) //console log response
+                    .then(data => {
+                        GlobalDebtAmount = data;
+                        console.log(GlobalDebtAmount);
+                        //set the text of CurrentDebt to the value of the cookie DebtAmount
+                        GlobalDebtAmount = parseInt(GlobalDebtAmount);
+                        FixedGlobalDebtAmount = GlobalDebtAmount.toLocaleString("en-US");
+                        CurrentDebt.innerHTML = "$" + FixedGlobalDebtAmount;
+                        //GlobalDebtAmount = GlobalDebtAmount + 1;
+                    Cookies.set('GlobalDebtAmount', GlobalDebtAmount);
+                    FixedGlobalDebtAmount = GlobalDebtAmount.toLocaleString("en-US");
+                    CurrentDebt.innerHTML = "$" + FixedGlobalDebtAmount;
+                    });
+            } catch (error) {
+                Toggle()
+                $.alert({
+                    title: 'Error!',
+                    content: 'Failed to add debt to global debt, switching to personal debt!',
+                    type: 'red',
+                    typeAnimated: true,
+                });
+            }
+        }
+    }
+    </script>
+</body>
+</html>

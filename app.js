@@ -2,7 +2,10 @@ var http = require('http');
 var url = require('url');
 var fs = require('fs');
 const Datastore = require('nedb');
-console.log(Datastore);
+var express = require('express')
+var app = express()
+console.log("Starting server...")
+ // Use this after the variable declaration
 var response = "Error 500: Internal Server Error";
 var GlobalDebtAmount = 14000
 const database = new Datastore('database.db');
@@ -16,12 +19,18 @@ database.find({}, function (err, docs) {
     }
 });
 http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html'});
+        const headers = {
+          'Access-Control-Allow-Origin': '*', /* @dev First, read about security */
+          'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
+          'Access-Control-Max-Age': 2592000, // 30 days
+          /** add other headers as per requirement */
+        };
+        res.writeHead(200, headers);
   var q = url.parse(req.url, true).query;
   var getoradd = q.getoradd;
   if (getoradd == "get") {
     response = (GlobalDebtAmount);
-    console.log(response + "get");
+    console.log(response);
   }
     else if (getoradd == "add") {
     GlobalDebtAmount += 1;
@@ -33,11 +42,19 @@ http.createServer(function (req, res) {
     response = GlobalDebtAmount
     //save to a file
 
-    console.log(response + "add");
+    console.log(response);
+    }
+    else if (getoradd == "addmany") {
+        GlobalDebtAmount += 3;
+    database.update({
+        name: 'GlobalDebtAmount'
+    }, {
+        $set: { value: GlobalDebtAmount }
+    })
+    response = GlobalDebtAmount
     }
     else {
      response = "Error 400: Bad Request";
-     console.log(response + "400");
     }
     console.log(response);
     fixedresponse = response.toString();
